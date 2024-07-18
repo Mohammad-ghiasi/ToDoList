@@ -107,6 +107,7 @@ export default function SingUpPage() {
                     </Button>
                     <Text className='text-sm text-doneText'>Alredy have an account? <Link href='/login' className='text-md font-bold text-myblue underline'>login</Link></Text>
                 </VStack>
+                
             </main>
         </>
     )
