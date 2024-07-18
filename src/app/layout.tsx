@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={`${ubuntu.className} bg-customBg`}>
         <Providers>
           <header>
-            <Text className="text-center text-[36px] md:text-[40px] lg:text-[50px] font-bold text-textcolor tracking-[5px] md:tracking-[10px] lg:tracking-[15px] pt-5 my-6 lg:my-10">
+            <Text className="text-center text-[36px] md:text-[40px] lg:text-[50px] font-bold text-textcolor tracking-[5px] md:tracking-[10px] lg:tracking-[15px] pt-5 my-5">
               TODOLIST
             </Text>
           </header>

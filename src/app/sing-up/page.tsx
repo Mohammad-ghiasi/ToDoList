@@ -12,29 +12,46 @@ import {
 } from '@chakra-ui/react';
 import Heading from '@/components/Heading';
 import Link from 'next/link';
+import axios from 'axios';
 
-interface singup {
+export interface singup {
     email: string;
     password: string;
+    name: string
 }
 
 export default function SingUpPage() {
+
     const { handleSubmit, register, reset, formState: { errors } } = useForm<singup>();
 
     const toast = useToast();
 
     const onSubmit = (data: singup) => {
-        console.log(data); // Replace with your submission logic
-        toast({
-            title: 'Sign-up successfuly!',
-            status: 'success',
-            position: 'top',
-            duration: 2000,
-            isClosable: true,
-        });
-        setTimeout(() => {
-            reset()
-        }, 1500);
+        axios.post('http://localhost:3000/api/auth/sing-up', data)
+            .then((res) => {
+                console.log(res)
+                toast({
+                    title: 'Account created successfully',
+                    status: 'success',
+                    position: 'top',
+                    duration: 2000,
+                    isClosable: true,
+                });
+                reset()
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1500);
+            })
+            .catch((err) => {
+                console.log(err)
+                toast({
+                    title: err.response.data.message,
+                    status: 'error',
+                    position: 'top',
+                    duration: 2000,
+                    isClosable: true,
+                });
+            })
     };
 
     return (
@@ -43,7 +60,25 @@ export default function SingUpPage() {
                 <Heading text="Sing Up." route='/' />
             </header>
             <main>
-                <VStack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4} align="stretch">
+                <VStack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4} align="stretch" mb={5}>
+                    <FormControl>
+                        <FormLabel className='text-textcolor'>Your name</FormLabel>
+                        <Input borderColor={errors.name?.message ? 'red' : 'inherit'}
+                            type="text"
+                            {...register('name', {
+                                required: {
+                                    value: true,
+                                    message: 'name is required'
+                                },
+                                minLength: {
+                                    value: 3,
+                                    message: 'Name should be at least 3 characters'
+                                }
+                            })}
+                            placeholder="Enter your name"
+                        />
+                        <FormHelperText color="red.500">{errors.name?.message}</FormHelperText>
+                    </FormControl>
                     <FormControl>
                         <FormLabel className='text-textcolor'>Email address</FormLabel>
                         <Input borderColor={errors.email?.message ? 'red' : 'inherit'}
