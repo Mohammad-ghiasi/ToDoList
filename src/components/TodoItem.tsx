@@ -61,7 +61,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, timestamp, completed }) 
     } catch (error) {
       console.error(error);
       toast({
-        title: error.response?.data?.message || 'Error updating todo status',
+        title: 'Face an error' || 'Error updating todo status',
         status: 'error',
         position: 'top',
         duration: 2000,

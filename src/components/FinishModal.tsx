@@ -30,7 +30,7 @@ export default function FinishModal() {
         } catch (error) {
             console.error(error);
             toast({
-                title: error.response?.data?.message || 'Error clearing todos',
+                title: 'face an error' || 'Error clearing todos',
                 status: 'error',
                 position: 'top',
                 duration: 2000,

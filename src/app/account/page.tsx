@@ -10,9 +10,9 @@ import Heading from "@/components/Heading";
 
 
 
-export default function page() {
+export default function AccountPage() {
     const toast = useToast();
-    const [data, setData] = useState<userData | null>(null);
+    const [data, setData] = useState<any>(null);
     const isLoggedIn: boolean = userStore((state) => state.isLoggedIn);
     const todoLength: number = userStore((state) => state.todoLength);
     const { loginUser, logoutUser } = userStore((state) => state.actions);
