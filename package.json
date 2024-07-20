@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "build": "next build && npx prisma generate"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",
