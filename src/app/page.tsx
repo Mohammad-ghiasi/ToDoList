@@ -1,8 +1,11 @@
-"use client"
-import Options from "@/components/Options";
-import { Box, Button, Text, useToast } from "@chakra-ui/react";
+'use client';
+
+import { Box, Button, useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { userStore } from "@/store/loginuser";
+import { useEffect } from "react";
+import TaskItem from "@/components/TodoItem";
+import Options from "@/components/Options";
 
 export interface userData {
   id: number;
@@ -10,48 +13,53 @@ export interface userData {
   email: string;
 }
 
+export interface posts {
+  title: string;
+  completed: boolean;
+  data: string;
+  id: number;
+}
+
 export default function Home() {
-  const [data, setData] = useState<userData | null>(null);
+  const { isLoggedIn, todos, actions: { loginUser,decreaseTodoLength, setTodoLength, setTodos, deleteTodo } } = userStore((state) => state);
   const toast = useToast();
 
   useEffect(() => {
     axios.get("http://localhost:3000/api/user")
       .then((res) => {
-        setData(res.data.data)
+        loginUser();
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []);
 
-  const handleLogout = (): any => {
-    axios.get('http://localhost:3000/api/logout')
+    axios.get("http://localhost:3000/api/posts/getposts")
       .then((res) => {
-        toast({
-          title: res.data.message,
-          status: 'success',
-          position: 'top',
-          duration: 2000,
-          isClosable: true,
-        });
-        window.location.reload();
+        setTodos(res.data.todos);
+        setTodoLength(res.data.todos.length);
       })
-      .catch((err) => console.log(err)
-      )
-  }
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [setTodoLength, setTodos, loginUser]);
 
+  
   return (
     <Box>
-
       <main className="pt-5">
         <Options />
       </main>
-      <Box>
-        <Text>{data?.id}</Text>
-        <Text>{data?.name}</Text>
-        <Text>{data?.email}</Text>
+      <Box className="flex flex-col space-y-5 mt-10">
+        {todos?.map((item: posts) => (
+          <TaskItem
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            timestamp={item.data}
+            completed={item.completed}
+          />
+        ))}
       </Box>
-      <Button onClick={() => handleLogout()}>logout</Button>
     </Box>
   );
-};
+}
